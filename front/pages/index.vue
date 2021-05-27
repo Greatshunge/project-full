@@ -1,59 +1,43 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        front
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+  <div class="kkb-container">
+    <VirtualList :listData="articles" :estimatedItemSize="300">
+      <div>ppp</div>
+    </VirtualList>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({})
+<script>
+import VirtualList from "~/components/VirtualList";
+export default {
+  components: {
+    VirtualList
+  },
+  data() {
+    return {
+      articles: []
+    };
+  },
+  async mounted() {
+    let ret = await this.$http.get("article");
+    if (ret.code == 0) {
+      this.articles = ret.data;
+    }
+  },
+  methods: {
+    toUpload() {
+      this.$router.push("/uc");
+    },
+    toEdit() {
+      this.$router.push("/editor/new");
+    }
+  }
+};
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
@@ -71,5 +55,19 @@ export default Vue.extend({})
 
 .links {
   padding-top: 15px;
+}
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  margin: 0;
+}
+.kkb-container {
+  width: 980px;
+  height: 75vh;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
 }
 </style>
